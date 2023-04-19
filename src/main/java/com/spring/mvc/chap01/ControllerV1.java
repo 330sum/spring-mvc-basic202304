@@ -71,7 +71,7 @@ public class ControllerV1 {
     @RequestMapping("/order")
     public String order(OrderRequestDTO dto) {
         System.out.println("dto = " + dto);
-        return"";
+        return "";
     }
 
 
@@ -90,6 +90,15 @@ public class ControllerV1 {
         return "";
     }
 
+
+    /*
+      1. @GetMapping
+        GET방식 (데이터 조회시 사용): URL 길이 한정, 보안위험, 캐싱
+      2. @PostMapping
+        POST방식 (데이터 변동시 사용): 크기 제한없고, URL데이터 노출 없음. 캐싱 안함.
+    */
+
+
     // 음식 선택 요청 처리
     // POST방식으로 안주면 안받을꺼얌
 //    @RequestMapping(value = "/food-select", method = RequestMethod.POST)
@@ -99,14 +108,6 @@ public class ControllerV1 {
         System.out.println("category = " + category);
         return "hello";
     }
-
-
-
-
-
-
-
-
 
 
 }

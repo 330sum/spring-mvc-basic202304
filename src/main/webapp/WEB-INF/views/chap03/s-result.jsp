@@ -17,7 +17,7 @@
         <c:if test="${result == 'success'}">로그인 성공</c:if>
         --%>
     </h1>
-    <a href="/hw/s-login">다시 로그인하기</a>
+    <a href="/hw/s-login-form">다시 로그인하기</a>
 
 
     <script>

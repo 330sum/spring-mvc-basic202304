@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/hw")
 public class LoginController {
 
-    @GetMapping("s-login")
+    @GetMapping("s-login-form")
     public String login() {
         System.out.println("/hw/s-login : GET요청 발생!");
         return "chap03/s-form";

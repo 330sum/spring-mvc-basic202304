@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-// 응답 데이터 처리
+/* ------- 응답 데이터 처리 ------ */
 @RequestMapping("/model/*")
 @Controller // 스프링 컨트롤러(컴포넌트)에 빈으로 등록
 public class ControllerV2 {

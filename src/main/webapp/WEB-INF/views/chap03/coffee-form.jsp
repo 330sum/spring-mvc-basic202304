@@ -66,13 +66,17 @@
                 <label class="price"># 가격: <span class="price-value">3000</span>원</label>
 
                 <!-- hidden타입은 렌더링은 안되지만 서버로 보낼 수 있음  -->
-                <input id="price-tag" type="text" name="price">
+                <input id="price-tag" type="text" name="price" value="3000">
+<%--                <input id="price-tag" type="hidden" name="price">--%>
 
 
                 <label>
                     <button type="submit">주문하기</button>
                 </label>
             </form>
+
+            <a href="/coffee/order">재주문하기</a>
+
         </div>
     </div>
 

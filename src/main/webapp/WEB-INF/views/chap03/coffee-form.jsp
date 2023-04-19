@@ -74,9 +74,6 @@
                     <button type="submit">주문하기</button>
                 </label>
             </form>
-
-            <a href="/coffee/order">재주문하기</a>
-
         </div>
     </div>
 

@@ -2,8 +2,7 @@ package com.spring.mvc.chap01;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,6 +61,50 @@ public class ControllerV1 {
 
         return "";
     }
+
+
+    // == 3. 커맨드 객체 이용하기 (젤이 많이 사용)
+    // == 쿼리 스트링의 양이 너무 많을 경우, 또는 연관성이 있을 경우
+    // ==> ex)  /spring/order?oNum=20230419007-P&goods=구두&amount=3&price=50000...
+    // - DTO : 데이터를 감싸주는 역할 (객체자동포장)
+
+    @RequestMapping("/order")
+    public String order(OrderRequestDTO dto) {
+        System.out.println("dto = " + dto);
+        return"";
+    }
+
+
+    // == 4. URL에 경로로 붙어 있는 데이터 읽기 (?물음표 안쓰고 /슬래쉬 쓰는 '요즘 뜨고있는 버전')
+    // ==> /spring/member/hong/107
+    //      hong이라는 유저의 107번 게시글을 읽고싶음
+    @RequestMapping("/member/{userName}/{bNo}")
+    public String member(
+            @PathVariable String userName,
+            @PathVariable long bNo
+            // @PathVariable(/에 사용) 생략하면 안됨!
+            // 생략하면 RequestParam(?에 사용)으로 읽게 됨
+    ) {
+        System.out.println("userName = " + userName);
+        System.out.println("bNo = " + bNo);
+        return "";
+    }
+
+    // 음식 선택 요청 처리
+    // POST방식으로 안주면 안받을꺼얌
+//    @RequestMapping(value = "/food-select", method = RequestMethod.POST)
+    @PostMapping("/food-select")
+    public String foodSelect(String foodName, String category) {
+        System.out.println("foodName = " + foodName);
+        System.out.println("category = " + category);
+        return "hello";
+    }
+
+
+
+
+
+
 
 
 

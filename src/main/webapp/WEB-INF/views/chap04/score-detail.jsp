@@ -75,24 +75,7 @@
         </section>
 
     </div>
+
 </body>
 
 </html>
-
-
-
-<%--
-    <div class="wrapper">
-         <h1>${name}님 성적정보</h1>
-
-        <ul>
-            <li># 국어: ${kor}점</li>
-            <li># 영어: ${eng}점</li>
-            <li># 수학: ${math}점</li>
-            <li># 총점: ${total}점</li>
-            <li># 평균: ${avg}점</li>
-            <li># 학점: ${grade}</li>
-        </ul>
-        <div class="list-btn">목록</div>
-    </div>
---%>

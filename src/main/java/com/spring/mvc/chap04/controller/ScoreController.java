@@ -29,6 +29,9 @@ import java.util.List;
  *
  *   4. 성적정보 상세 조회 요청
  *       - /score/detail : GET (조회니까 get)
+ *
+ *   5. 수정 폼으로 이동
+ *      - /score/
  * */
 @Controller
 @RequestMapping("/score")
@@ -37,13 +40,13 @@ import java.util.List;
 public class ScoreController {
 
     // 저장소에 의존해야 데이터를 받아서 클라이언트에게 응답할 수 있음
-    // 구현체에 의존하면 안됨! DIP위반! 역할에 의존하도록 만들기 (인터플레이스)
-    // 객체 바로 주입하면 안되고 DI! 생성자 주입!
+    // 구현체에 의존하면 안됨! DIP위반! 역할에 의존하도록 만들기 (인터페이스)
+    // 객체 바로 주입하면 안됨! DI! 생성자 주입!
     private final ScoreRepository repository;
 
 
-    // 생성자 주입객체의 불변성을 위해서 final 붙이기! (계속 메모리에 저장, 중간에 안바뀌게)
-    // 세터없으니 중간에 못 들어옴
+    // 주입객체의 불변성을 위해서 final 붙이기! (계속 메모리에 저장, 중간에 안바뀌게)
+    // 생성자 주입을 받고 세터가 없으니, 중간에 바뀔수 없음
     // 스프링한테 객체 구현을 맡기기 (=빈 등록하기!) -> @Component -> ScoreRepositoryImpl로 가서 붙이기
     // 의존 객체 주입 해달라! -> @Autowired
     // 근데 @Autowired이거 생략해도 돌아감! 왜? 자동@Autowired 조건이 있음
@@ -83,8 +86,12 @@ public class ScoreController {
 
         // 2-2. dto(ScoreDTO)를 entity(Score)로 변환해야 함! (-> Score생성자에게 dto 넘기기)
         Score score = new Score(dto);
+//        Score score = new Score();
+//        score.setName(dto.getName());
+//        score.setKor(dto.getKor());
+//        ... 이거 언제 다함. 그래서 score 클래스에 dto 받는 생성자 추가 (28번라인)
 
-        // 2-3. save명령
+        // 2-3. save명령 -> 위에꺼 잘 됐는지 확인하기 위해서 save로 가서 찍어보기 (Impl 81번라인)
         repository.save(score);
 
         // 2-4. redirect(리다이렉트) : 자동으로 새로운 요청을 보내는 것
@@ -92,9 +99,9 @@ public class ScoreController {
           return "chap04/score-list"; - 뷰포워딩(JSP파일)
 
              등록요청에서 JSP 뷰포워딩을 하면, 갱신된 목록을 다시 한번 저장소에서 불러와서
-             모델에 담는 추가적인 코드가 필요하지만, (63번~64번라인)
+             모델에 담는 추가적인 코드가 필요하지만, (68번~69번라인)
 
-             리다이렉트를 통해서 위어서 만든 /score/list : GET을 (59번라인)
+             리다이렉트를 통해서 위에서 만든 /score/list : GET을 (63번라인)
              자동으로 다시 보낼 수 있다면 번거로운 코드가 줄어 들 수 있음.
         */
         //   JSP 파일을 적는 것이 아니라 (return "chap04/score-list";) - 뷰포워딩
@@ -126,20 +133,12 @@ public class ScoreController {
         Score score = repository.findByStuNum(stuNum);
         model.addAttribute("s", score);
 
-//        Score byStuNum = repository.findByStuNum(stuNum);
-//        model.addAttribute("name", byStuNum.getName());
-//        model.addAttribute("kor", byStuNum.getKor());
-//        model.addAttribute("eng", byStuNum.getEng());
-//        model.addAttribute("math", byStuNum.getMath());
-//        model.addAttribute("total",byStuNum.getTotal());
-//        model.addAttribute("avg", byStuNum.getAverage());
-//        model.addAttribute("grade", byStuNum.getGrade());
         return "chap04/score-detail";
     }
 
     /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
 
-    // 5. 수정하기
+    // 5. 수정 화면 열어주기
     @GetMapping("/update")
     public String update(@RequestParam int stuNum, Model model) {
         System.out.println("/score/modify : GET");
@@ -150,15 +149,18 @@ public class ScoreController {
         return "chap04/score-modify";
     }
 
+    // 6. 수정 완료 처리
     @PostMapping("/modify")
     public String modify(int stuNum, ScoreRequestDTO dto) {
         System.out.println("score/modify : POST");
 
-        Score score = repository.findByStuNum(stuNum);
-        score.setKor(dto.getKor());
-        score.setEng(dto.getEng());
-        score.setMath(dto.getMath());
-        score.changeScore(dto);
+//        Score score = repository.findByStuNum(stuNum);
+//        score.setKor(dto.getKor());
+//        score.setEng(dto.getEng());
+//        score.setMath(dto.getMath());
+//        score.changeScore(dto);
+
+        repository.update(stuNum, dto);
 
         return "redirect:/score/detail?stuNum="+stuNum;
     }

@@ -15,8 +15,7 @@ public interface ScoreRepository {
     default List<Score> findAll(String sort) {
         return null;
     }; // 정렬 목록조회
-    // 처음 설계와 다르게 갑자기 인터페이스가 추가되면 선택적으로 오버라이딩 가능하게 default를 붙임 (실무 꿀팁)
-    // default 붙이면 오버라이드 강제를 막을 수 있음
+    // 처음 설계와 다르게 갑자기 인터페이스가 추가되면 default를 붙여서 강제 오버라이딩을 막을 수 있음 (실무 꿀팁) - 사이드 이펙트 방지
 
     // 2. 성적정보 등록(추가)
     boolean save(Score score);

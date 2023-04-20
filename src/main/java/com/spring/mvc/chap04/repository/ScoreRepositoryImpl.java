@@ -13,7 +13,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
 
     // 성적정보를 쌓아놓을 곳 (Map사용 -> 순서대로가 아니기 때문)
     // key: 학번, value: 성적정보
-    private static final Map<Integer, Score> scoreMap; // 메모리에 하나만 존재하도록, 그리고 못바뀌게(final), 내부로 바로 접근 못하게(final)
+    private static final Map<Integer, Score> scoreMap; // 메모리에 하나만 존재하도록(static), 그리고 못바뀌게(final), 내부로 바로 접근 못하게(private)
 
     // 학번에 사용할 일련번호
     private static int sequence; // 학생 한명 마다 붙이니까 final 쓰면 안됨 (초기화 하지 않은 건? 클래스 생성 시 다 0 또는 null로 초기화 되기 때문)
@@ -21,6 +21,8 @@ public class ScoreRepositoryImpl implements ScoreRepository {
 
     static {
         scoreMap = new HashMap<>();
+
+        // 기본데이터
         Score stu1 = new Score(new ScoreRequestDTO("뽀로로", 100, 50, 70));
         Score stu2 = new Score(new ScoreRequestDTO("루피", 33, 56, 12));
         Score stu3 = new Score(new ScoreRequestDTO("크롱", 88, 12, 0));
@@ -84,6 +86,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
 
     @Override
     public boolean deleteByStuNum(int stuNum) {
+        // 학번이 존재하지 않으면 false
         if (!scoreMap.containsKey(stuNum)) return false;
         scoreMap.remove(stuNum);
         return true;
@@ -99,6 +102,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
 
     @Override
     public boolean update(int stuNum, ScoreRequestDTO dto) {
+        if (!scoreMap.containsKey(stuNum)) return false;
         // Score객체 꺼내기
         Score score = scoreMap.get(stuNum);
         // 점수 재설정

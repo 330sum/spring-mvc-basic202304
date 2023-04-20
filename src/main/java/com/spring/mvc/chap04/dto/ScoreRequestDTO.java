@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ScoreRequestDTO {
+// jsp input속성의 name이랑 맴버변수랑 맞춰야함
 
     private String name; // 이름
     private int kor, eng, math; // 국어점수, 영어점수, 수학점수

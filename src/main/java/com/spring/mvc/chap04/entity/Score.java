@@ -25,22 +25,26 @@ public class Score {
     private double average; // 평균
     private Grade grade; // 학점
 
-    // dto를 전달받는 생성자
+    /* dto를 전달받는 생성자 */
     public Score(ScoreRequestDTO dto) {
         this.name = dto.getName();
+        changeScore(dto);
+    }
+
+    public void changeScore(ScoreRequestDTO dto) {
         this.kor = dto.getKor();
         this.eng = dto.getEng();
         this.math = dto.getMath();
         calcTotalAndAvg(); // 총점, 평균  [ * 메서드 추출 - ctrl + alt + m ]
         calcGrade(); // 학점 계산
-
-
     }
-
 
     private void calcTotalAndAvg() {
         this.total = kor + eng + math;
-        this.average = total / 3.0;
+        // 소수점 이하 2자리
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedAvg = df.format(total / 3.0);
+        this.average = Double.parseDouble(formattedAvg);
     }
 
 
@@ -58,9 +62,4 @@ public class Score {
         }
     }
 
-
-    public void changeScore(ScoreRequestDTO dto) {
-        calcTotalAndAvg();
-        calcGrade();
-    }
 }

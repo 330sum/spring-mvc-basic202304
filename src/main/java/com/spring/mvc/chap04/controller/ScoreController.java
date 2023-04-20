@@ -58,11 +58,14 @@ public class ScoreController {
 
     // 1. 성적등록화면 띄우기 + 정보목록조회
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model, @RequestParam(defaultValue = "num") String sort) {
         System.out.println("/score/list : GET!");
+        System.out.println("정렬 요구사항: " + sort);
 
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList = repository.findAll(sort);
         model.addAttribute("sList", scoreList);
+
+        repository.findAll();
 
         return "chap04/score-list";
     }
@@ -117,9 +120,51 @@ public class ScoreController {
 
     // 4. 상세조회
     @GetMapping("/detail")
-    public String detail() {
+    public String detail(@RequestParam int stuNum, Model model) {
         System.out.println("/score/detail : GET");
-        return "";
+
+        Score score = repository.findByStuNum(stuNum);
+        model.addAttribute("s", score);
+
+//        Score byStuNum = repository.findByStuNum(stuNum);
+//        model.addAttribute("name", byStuNum.getName());
+//        model.addAttribute("kor", byStuNum.getKor());
+//        model.addAttribute("eng", byStuNum.getEng());
+//        model.addAttribute("math", byStuNum.getMath());
+//        model.addAttribute("total",byStuNum.getTotal());
+//        model.addAttribute("avg", byStuNum.getAverage());
+//        model.addAttribute("grade", byStuNum.getGrade());
+        return "chap04/score-detail";
     }
+
+    /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
+
+    // 5. 수정하기
+    @GetMapping("/update")
+    public String update(@RequestParam int stuNum, Model model) {
+        System.out.println("/score/modify : GET");
+
+        Score score = repository.findByStuNum(stuNum);
+        model.addAttribute("s", score);
+
+        return "chap04/score-modify";
+    }
+
+    @PostMapping("/modify")
+    public String modify(int stuNum, ScoreRequestDTO dto) {
+        System.out.println("score/modify : POST");
+
+        Score score = repository.findByStuNum(stuNum);
+        score.setKor(dto.getKor());
+        score.setEng(dto.getEng());
+        score.setMath(dto.getMath());
+        score.changeScore(dto);
+
+        return "redirect:/score/detail?stuNum="+stuNum;
+    }
+
+
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.spring.mvc.chap04.repository;
 
+import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import com.spring.mvc.chap04.entity.Score;
 
 import java.util.List;
@@ -10,7 +11,12 @@ import java.util.List;
 public interface ScoreRepository {
 
     // 1. 성적정보 전체목록 조회
-    List<Score> findAll();
+    List<Score> findAll(); // 일반 목록조회
+    default List<Score> findAll(String sort) {
+        return null;
+    }; // 정렬 목록조회
+    // 처음 설계와 다르게 갑자기 인터페이스가 추가되면 선택적으로 오버라이딩 가능하게 default를 붙임 (실무 꿀팁)
+    // default 붙이면 오버라이드 강제를 막을 수 있음
 
     // 2. 성적정보 등록(추가)
     boolean save(Score score);
@@ -21,5 +27,6 @@ public interface ScoreRepository {
     // 4. 성적정보 개별 조회
     Score findByStuNum(int stuNum);
 
-
+    // 5. 성적정보 수정
+    boolean update(int stuNum, ScoreRequestDTO dto);
 }

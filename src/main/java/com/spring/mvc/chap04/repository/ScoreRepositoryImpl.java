@@ -1,8 +1,7 @@
 package com.spring.mvc.chap04.repository;
 
-import com.spring.mvc.chap04.entity.Grade;
+import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import com.spring.mvc.chap04.entity.Score;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -10,7 +9,7 @@ import java.util.stream.Collectors;
 
 // Impl : 구현체가 하나인 경우, 이렇게 붙임
 @Repository // 스프링 빈 등록(Component): 객체의 생성 제어권을 스프링에게 위임
-public class ScoreRepositoryImpl implements ScoreRepository{
+public class ScoreRepositoryImpl implements ScoreRepository {
 
     // 성적정보를 쌓아놓을 곳 (Map사용 -> 순서대로가 아니기 때문)
     // key: 학번, value: 성적정보
@@ -22,9 +21,13 @@ public class ScoreRepositoryImpl implements ScoreRepository{
 
     static {
         scoreMap = new HashMap<>();
-        Score stu1 = new Score("뽀로로", 100, 50, 70, ++sequence, 0, 0, Grade.A);
-        Score stu2 = new Score("루피", 33,56, 12, ++sequence, 0, 0, Grade.A);
-        Score stu3 = new Score("크롱", 88, 12, 0, ++sequence, 0, 0, Grade.A);
+        Score stu1 = new Score(new ScoreRequestDTO("뽀로로", 100, 50, 70));
+        Score stu2 = new Score(new ScoreRequestDTO("루피", 33, 56, 12));
+        Score stu3 = new Score(new ScoreRequestDTO("크롱", 88, 12, 0));
+
+        stu1.setStuNum(++sequence);
+        stu2.setStuNum(++sequence);
+        stu3.setStuNum(++sequence);
 
         scoreMap.put(stu1.getStuNum(), stu1);
         scoreMap.put(stu2.getStuNum(), stu2);
@@ -44,6 +47,26 @@ public class ScoreRepositoryImpl implements ScoreRepository{
         // new ArrayList<> 지워도 됨. 왜? toList()가 있어서 -> ArrayList 객체가 생성 됨
     }
 
+    public List<Score> findAll(String sort) {
+        Comparator<Score> comparator = Comparator.comparing(score -> score.getStuNum());
+        switch (sort) {
+            case "num":
+                comparator = Comparator.comparing(Score::getStuNum);
+                break;
+            case "name":
+                comparator = Comparator.comparing(Score::getName);
+                break;
+            case "avg":
+                comparator = Comparator.comparing(Score::getAverage);
+                break;
+        }
+        return scoreMap.values()
+                .stream()
+                .sorted(comparator)
+                .collect(Collectors.toList())
+                ;
+    }
+
     /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
 
     @Override
@@ -61,7 +84,7 @@ public class ScoreRepositoryImpl implements ScoreRepository{
 
     @Override
     public boolean deleteByStuNum(int stuNum) {
-        if(!scoreMap.containsKey(stuNum)) return false;
+        if (!scoreMap.containsKey(stuNum)) return false;
         scoreMap.remove(stuNum);
         return true;
     }
@@ -72,4 +95,24 @@ public class ScoreRepositoryImpl implements ScoreRepository{
     public Score findByStuNum(int stuNum) {
         return scoreMap.get(stuNum);
     }
+
+
+    @Override
+    public boolean update(int stuNum, ScoreRequestDTO dto) {
+        // Score객체 꺼내기
+        Score score = scoreMap.get(stuNum);
+        // 점수 재설정
+        score.changeScore(dto);
+        return true;
+    }
+
+    /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
+
+
+
+
+
+
+
+
 }

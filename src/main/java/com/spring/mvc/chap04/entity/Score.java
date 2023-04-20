@@ -4,6 +4,9 @@ import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 @Setter
 @Getter
 @ToString
@@ -35,7 +38,6 @@ public class Score {
     }
 
 
-
     private void calcTotalAndAvg() {
         this.total = kor + eng + math;
         this.average = total / 3.0;
@@ -57,4 +59,8 @@ public class Score {
     }
 
 
+    public void changeScore(ScoreRequestDTO dto) {
+        calcTotalAndAvg();
+        calcGrade();
+    }
 }

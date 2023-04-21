@@ -71,6 +71,7 @@
             <div class="btn-group">
                 <a class="list-btn" href="/score/list">목록</a>
                 <a class="list-btn" href="/score/update?stuNum=${s.stuNum}">수정</a>
+                <!-- 수정시, 특정 데이터를 가져와야함. 즉, 수정하고자 하는 학번을 조회해야함 (get) -->
             </div>
         </section>
 

@@ -1,9 +1,11 @@
 package com.spring.mvc.chap04.controller;
 
+import com.spring.mvc.chap04.dto.ScoreListResponseDTO;
 import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import com.spring.mvc.chap04.entity.Score;
 import com.spring.mvc.chap04.repository.ScoreRepository;
 import com.spring.mvc.chap04.repository.ScoreRepositoryImpl;
+import com.spring.mvc.chap04.service.ScoreService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  *   << 요청 URL >>
@@ -42,8 +45,8 @@ public class ScoreController {
     // 저장소에 의존해야 데이터를 받아서 클라이언트에게 응답할 수 있음
     // 구현체에 의존하면 안됨! DIP위반! 역할에 의존하도록 만들기 (인터페이스)
     // 객체 바로 주입하면 안됨! DI! 생성자 주입!
-    private final ScoreRepository repository;
-
+//    private final ScoreRepository repository;
+    private final ScoreService scoreService;
 
     // 주입객체의 불변성을 위해서 final 붙이기! (계속 메모리에 저장, 중간에 안바뀌게)
     // 생성자 주입을 받고 세터가 없으니, 중간에 바뀔수 없음
@@ -65,10 +68,17 @@ public class ScoreController {
         System.out.println("/score/list : GET!");
         System.out.println("정렬 요구사항: " + sort);
 
-        List<Score> scoreList = repository.findAll(sort);
-        model.addAttribute("sList", scoreList);
+//        List<Score> scoreList = repository.findAll(sort); // 데이터베이스에 있는 모든 정보
+//        model.addAttribute("sList", scoreList); // 모든 정보 클라이언트 개발자에게 줌
+        // 근데 클라이언트 개발자가 구체적으로 원하는 게 있음. 그래서 requestDTO 따로 만듦
 
-        repository.findAll();
+    //-> 서비스 시킴
+
+        List<ScoreListResponseDTO> responseDTOList = scoreService.getList(sort);
+
+        model.addAttribute("sList", responseDTOList);
+
+//        repository.findAll();
 
         return "chap04/score-list";
     }
@@ -84,15 +94,18 @@ public class ScoreController {
         // 2-1. 입력데이터(쿼리스트링) 읽기
         System.out.println("dto" + dto);
 
-        // 2-2. dto(ScoreDTO)를 entity(Score)로 변환해야 함! (-> Score생성자에게 dto 넘기기)
-        Score score = new Score(dto);
-//        Score score = new Score();
-//        score.setName(dto.getName());
-//        score.setKor(dto.getKor());
-//        ... 이거 언제 다함. 그래서 score 클래스에 dto 받는 생성자 추가 (28번라인)
+//        // 2-2. dto(ScoreDTO)를 entity(Score)로 변환해야 함! (-> Score생성자에게 dto 넘기기)
+//        Score score = new Score(dto);
+////        Score score = new Score();
+////        score.setName(dto.getName());
+////        score.setKor(dto.getKor());
+////        ... 이거 언제 다함. 그래서 score 클래스에 dto 받는 생성자 추가 (28번라인)
+//
+//        // 2-3. save명령 -> 위에꺼 잘 됐는지 확인하기 위해서 save로 가서 찍어보기 (Impl 81번라인)
+//        repository.save(score);
 
-        // 2-3. save명령 -> 위에꺼 잘 됐는지 확인하기 위해서 save로 가서 찍어보기 (Impl 81번라인)
-        repository.save(score);
+//        ->  서비스 시킴
+        scoreService.insertScore(dto);
 
         // 2-4. redirect(리다이렉트) : 자동으로 새로운 요청을 보내는 것
         /*
@@ -117,7 +130,8 @@ public class ScoreController {
     public String remove(@RequestParam int stuNum) {
         System.out.println("/score/remove : GET (원래는 POST! get으로 하면 안되는데, 너무 어려우니까)");
 
-        repository.deleteByStuNum(stuNum);
+//        repository.deleteByStuNum(stuNum);
+        scoreService.delete(stuNum);
 
         return "redirect:/score/list";
     }
@@ -125,15 +139,25 @@ public class ScoreController {
     /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
 
 
+    // @RequestParam(required = true) -> 필수 파라미터로 지정하는 것! -> 없으면 에러나게 함
+
+
     // 4. 상세조회
     @GetMapping("/detail")
-    public String detail(@RequestParam int stuNum, Model model) {
+    public String detail(@RequestParam(required = true) int stuNum, Model model) {
         System.out.println("/score/detail : GET");
 
-        Score score = repository.findByStuNum(stuNum);
-        model.addAttribute("s", score);
+        retrieve(stuNum, model);
 
         return "chap04/score-detail";
+    }
+
+    /* 중복 부분 메서드로 추출! (4번과 5번) */
+    private void retrieve(int stuNum, Model model) {
+//        Score score = repository.findByStuNum(stuNum);
+        // -> 서비스 시키기
+        Score score = scoreService.retrieve(stuNum);
+        model.addAttribute("s", score);
     }
 
     /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
@@ -143,29 +167,30 @@ public class ScoreController {
     public String update(@RequestParam int stuNum, Model model) {
         System.out.println("/score/modify : GET");
 
-        Score score = repository.findByStuNum(stuNum);
-        model.addAttribute("s", score);
+        retrieve(stuNum, model);
 
         return "chap04/score-modify";
     }
 
     // 6. 수정 완료 처리
     @PostMapping("/modify")
+//    겟과 포스트맵핑은 같은 URL 사용 가능!
     public String modify(int stuNum, ScoreRequestDTO dto) {
         System.out.println("score/modify : POST");
 
 //        Score score = repository.findByStuNum(stuNum);
-//        score.setKor(dto.getKor());
-//        score.setEng(dto.getEng());
-//        score.setMath(dto.getMath());
-//        score.changeScore(dto);
+        // -> 서비스 시키기
+        Score score = scoreService.retrieve(stuNum);
+//       score.setKor(dto.getKor());
+//       score.setEng(dto.getEng());
+//       score.setMath(dto.getMath());
+        score.changeScore(dto);
+        /*캡슐화의 중요성!!!! 순서대로 안하면 총점평균과 학점계산이 어그러짐*/
 
-        repository.update(stuNum, dto);
+//        repository.update(stuNum, dto);
 
         return "redirect:/score/detail?stuNum="+stuNum;
     }
-
-
 
 
 

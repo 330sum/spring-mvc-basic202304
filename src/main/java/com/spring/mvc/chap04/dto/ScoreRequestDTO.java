@@ -1,5 +1,6 @@
 package com.spring.mvc.chap04.dto;
 
+import com.spring.mvc.chap04.entity.Score;
 import lombok.*;
 
 // 현재 DTO에서 세터,게터, 노아그 필수

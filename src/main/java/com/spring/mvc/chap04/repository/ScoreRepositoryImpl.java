@@ -99,6 +99,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
         return scoreMap.get(stuNum);
     }
 
+    /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
 
     @Override
     public boolean update(int stuNum, ScoreRequestDTO dto) {
@@ -110,7 +111,6 @@ public class ScoreRepositoryImpl implements ScoreRepository {
         return true;
     }
 
-    /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
 
 
 

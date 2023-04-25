@@ -70,9 +70,9 @@ public class ScoreController {
 
 //        List<Score> scoreList = repository.findAll(sort); // 데이터베이스에 있는 모든 정보
 //        model.addAttribute("sList", scoreList); // 모든 정보 클라이언트 개발자에게 줌
-        // 근데 클라이언트 개발자가 구체적으로 원하는 게 있음. 그래서 requestDTO 따로 만듦
+        // 근데 클라이언트 개발자가 구체적으로 원하는 게 있음. 그래서 responseDTOList 따로 만듦
 
-    //-> 서비스 시킴
+    //-> 서비스클래스 시킴
 
         List<ScoreListResponseDTO> responseDTOList = scoreService.getList(sort);
 
@@ -139,10 +139,9 @@ public class ScoreController {
     /*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/
 
 
-    // @RequestParam(required = true) -> 필수 파라미터로 지정하는 것! -> 없으면 에러나게 함
-
 
     // 4. 상세조회
+    // 146번라인 @RequestParam(required = true) -> 필수 파라미터라고 표시하는 것! -> 학번 없으면 결국 서버에서 에러남
     @GetMapping("/detail")
     public String detail(@RequestParam(required = true) int stuNum, Model model) {
         System.out.println("/score/detail : GET");
@@ -190,6 +189,8 @@ public class ScoreController {
 //        repository.update(stuNum, dto);
 
         return "redirect:/score/detail?stuNum="+stuNum;
+        // detail 화면으로 주는데, 어떤 부분 업데이트해서? stuNum 부분을 업데이트 해서 줘야함.
+        // 즉, stuNum이 필수 파라미터임. 필수로 꼭 줘야함
     }
 
 

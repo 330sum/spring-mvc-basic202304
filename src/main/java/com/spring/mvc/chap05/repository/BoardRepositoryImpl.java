@@ -10,17 +10,11 @@ import java.util.stream.Collectors;
 public class BoardRepositoryImpl implements BoardRepository {
 
     private final static Map<Integer, Board> boardMap;
-    private static int sequence;
+    private static int sequence; //생성시 0으로 초기화됨
 
     static {
-        boardMap = new HashMap<>();
 
-//        Board board1 = new Board(++sequence, "제목1", "내용1", 10, LocalDate.now().atStartOfDay());
-//        Board board2 = new Board(++sequence, "제목2", "내용2", 20, LocalDate.now().atStartOfDay());
-//        Board board3 = new Board(++sequence, "제목3", "내용3", 30, LocalDate.now().atStartOfDay());
-//        boardMap.put(board1.getBoardNo(), board1);
-//        boardMap.put(board2.getBoardNo(), board2);
-//        boardMap.put(board3.getBoardNo(), board3);
+        boardMap = new HashMap<>();
 
         Board b1 = new Board(++sequence, "돈까스 레시피", "그냥 이마트에서 사서 에어프라이 돌려라~");
         Board b2 = new Board(++sequence, "관종의 조건", "이 세상은 나를 중심으로 돌아간다라는 마음으로 행동해라ㅋㅋ");
@@ -36,6 +30,7 @@ public class BoardRepositoryImpl implements BoardRepository {
     public List<Board> findAll() {
         return new ArrayList<>(boardMap.values())
                 .stream()
+                .sorted(Comparator.comparing(Board::getBoardNo).reversed()) // 역순 -> 최신게시물 위로
                 .collect(Collectors.toList());
     }
 
@@ -51,8 +46,6 @@ public class BoardRepositoryImpl implements BoardRepository {
 
     @Override
     public boolean deleteByNo(int boardNo) {
-        // 게시글번호가 존재하지 않으면 false
-        if(!boardMap.containsKey(boardNo)) return false;
         boardMap.remove(boardNo);
         return true;
     }

@@ -22,22 +22,20 @@ import java.util.List;
  * /board/detail : GET
  */
 
-@Controller
+@Controller // DispatcherServlet이 컨트롤러 주입받을 수 있도록 꼭 작성!
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/board") // 공통 URL
 public class BoardController {
 
     private final BoardService boardService;
 
-    // 목록
+    // 목록 조회
     @GetMapping("/list")
     public String list(Model model) {
         System.out.println("/board/list : GET");
-        List<BoardListResponseDTO> responseDTOS = boardService.getList();
-        model.addAttribute("bList", responseDTOS);
+        List<BoardListResponseDTO> responseDTO = boardService.getList();
+        model.addAttribute("bList", responseDTO);
 
-//        List<Board> boardList = boardService.getList();
-//        model.getAttribute("boardList", boardList);
         return "chap05/list";
     }
 
@@ -55,38 +53,24 @@ public class BoardController {
         boardService.register(dto);
         return "redirect:/board/list";
     }
-//    // 등록
-//    @PostMapping("/register")
-//    public String register() {
-//        System.out.println("/board/register : POST");
-//        return "";
-//    }
 
 
-
-    // 삭제
-    @GetMapping("/remove")
-    public String remove(@RequestParam(required = true) int boardNo) {
-        System.out.println("/board/remove : GET");
-        boardService.delete(boardNo);
+    // 글 삭제 요청 처리
+    @GetMapping("/delete")
+    public String delete(int bno) {
+        System.out.println("/board/delete : GET");
+        boardService.delete(bno);
         return "redirect:/board/list";
     }
 
 
 
-    // 상세보기
+    // 글 상세 조회 요청
     @GetMapping("/detail")
-    public String detail(@RequestParam(required = true) int boardNo, Model model) {
+    public String detail(int bno, Model model) {
         System.out.println("/board/detail : GET");
-
-        retrieve(boardNo, model);
-
+        model.addAttribute("b", boardService.getDetail(bno));
         return "chap05/detail";
-    }
-
-    private void retrieve(int boardNo, Model model) {
-        Board board = boardService.retrieve(boardNo);
-        model.addAttribute("board", board);
     }
 
 

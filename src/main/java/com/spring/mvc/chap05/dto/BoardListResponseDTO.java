@@ -27,7 +27,7 @@ public class BoardListResponseDTO {
         this.viewCount = board.getViewCount();
     }
 
-    private String makePrettierDateString(LocalDateTime regDateTime) {
+    public static String makePrettierDateString(LocalDateTime regDateTime) {
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return pattern.format(regDateTime);
     }
@@ -49,7 +49,7 @@ public class BoardListResponseDTO {
      * @return : wishLength보다 targetString이 길면
      *              wishLength만큼 짤라서 뒤에 ... 붙여서 리턴
      */
-    private static String sliceString(String targetString, int wishLength) {
+    static String sliceString(String targetString, int wishLength) {
         return (targetString.length() > wishLength)
                 ? targetString.substring(0, wishLength) + "..."
                 : targetString;

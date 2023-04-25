@@ -29,6 +29,16 @@ dependencies {
 	// jsp 설정
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl:1.2'
+
+	// 데이터베이스 라이브러리 (뒤에 적인 버전정보 지우면 boot가 들어간 애들은 3번라인에 적혀있는거 보고 최적화버전을 찾아서 알아서 넣어줌)
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	// 오라클 연동하는 것 ojdbc인데, 우리는 마리아디비 연결!
+	// 마리아디비 커넥터 mariadb connector
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.8'
+
+
+
 }
 
 tasks.named('test') {

@@ -18,6 +18,6 @@ public interface PscoreRepository {
     // 상세조회
     Score detail(int stuNum);
     // 수정
-    boolean update(int stuNum)
+    boolean update(int stuNum);
 
 }

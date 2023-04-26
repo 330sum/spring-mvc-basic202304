@@ -4,6 +4,8 @@ import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -13,6 +15,7 @@ import java.text.NumberFormat;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Score {
 
     // 클라이언트가 주는 데이터
@@ -29,6 +32,17 @@ public class Score {
     public Score(ScoreRequestDTO dto) {
         this.name = dto.getName();
         changeScore(dto);
+    }
+
+    public Score(ResultSet rs) throws SQLException {
+        this.stuNum = rs.getInt("stu_num");
+        this.name = rs.getString("name"); // column은 DB에서 매칭 잘 해서 가져올 것!
+        this.kor = rs.getInt("kor");
+        this.eng = rs.getInt("eng");
+        this.math = rs.getInt("math");
+        this.total= rs.getInt("total");
+        this.average = rs.getDouble("average");
+        this.grade = Grade.valueOf(rs.getString("grade")); // DB에서 읽어와서 자바에서 enum으로 변환
     }
 
     public void changeScore(ScoreRequestDTO dto) {

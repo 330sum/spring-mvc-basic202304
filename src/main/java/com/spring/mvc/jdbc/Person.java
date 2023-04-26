@@ -6,14 +6,23 @@ package com.spring.mvc.jdbc;
 
 import lombok.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Setter @Getter
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Person {
 
     private long id; //int 23억 까지 받을 수 있음, db int(10)이면 99억까지 설정할 수 있음
     private String personName;
     private int personAge;
 
+    public Person(ResultSet rs) throws SQLException {
+        this.id = rs.getLong("id");
+        this.personName = rs.getString("person_name");
+        this.personAge = rs.getInt("person_age");
+    }
 }

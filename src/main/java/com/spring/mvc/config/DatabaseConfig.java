@@ -37,9 +37,9 @@ public class DatabaseConfig {
 //        return new HikariDataSource(config);
 //    }
 
-    // 스프링부트 없으면 이렇게 설정해야함.
+    // 스프링부트 없으면(레거시 환경에서는) 이렇게 설정해야함.
 
-    // 근데 스프링부트에서 설정 간편하게 지원해줌!
+    // 근데 스프링부트에서 이 설정을 간편하게 지원해줌!
     // src -> main -> resources -> application.properties
 
 }

@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 // Impl : 구현체가 하나인 경우, 이렇게 붙임
-@Repository // 스프링 빈 등록(Component): 객체의 생성 제어권을 스프링에게 위임
+@Repository("memory") // 스프링 빈 등록(Component): 객체의 생성 제어권을 스프링에게 위임
 public class ScoreRepositoryImpl implements ScoreRepository {
 
     // 성적정보를 쌓아놓을 곳 (Map사용 -> 순서대로가 아니기 때문)

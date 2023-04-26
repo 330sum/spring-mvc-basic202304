@@ -6,6 +6,9 @@ package com.spring.mvc.jdbc;
 
 import lombok.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Setter @Getter
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
@@ -16,4 +19,9 @@ public class Person {
     private String personName;
     private int personAge;
 
+    public Person(ResultSet rs) throws SQLException {
+        this.id = rs.getLong("id");
+        this.personName = rs.getString("person_name");
+        this.personAge = rs.getInt("person_age");
+    }
 }

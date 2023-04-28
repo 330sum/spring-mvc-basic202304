@@ -1,10 +1,12 @@
 package com.spring.mvc.chap51.repository;
 
 import com.spring.mvc.chap51.entity.Health;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-public interface HealthRepository {
+@Mapper
+public interface HealthMapper {
 
     // 전체 조회
     List<Health> findAll();
@@ -16,7 +18,7 @@ public interface HealthRepository {
     boolean remove(int memNum);
 
     // 개별조회
-    Health findByMemNum(int memNum);
+    Health findOne(int memNum);
 
     // 수정
     boolean update(int memNum);

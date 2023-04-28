@@ -11,6 +11,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Board {
 
+/*
+
+ create table tbl_board (
+	board_no int(10) auto_increment primary key,
+	title VARCHAR(80) not null,
+	content VARCHAR(2000),
+	view_count int(10) default 0,
+	reg_date_time DATETIME default current_timestamp
+);
+
+
+
+*/
+
     private int boardNo; // 게시글 번호
     private String title; // 제목
     private String content; // 내용

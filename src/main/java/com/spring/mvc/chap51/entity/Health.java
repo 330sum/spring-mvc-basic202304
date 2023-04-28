@@ -7,8 +7,20 @@ import lombok.*;
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Health {
 
+    /*
+    create table tbl_health (
+	mem_num INT(10) auto_increment primary key,
+	name VARCHAR(10) not null,
+	gender CHAR(1),
+	tall FLOAT(5, 2),
+	weight FLOAT(5, 2),
+	bmi FLOAT(5, 2),
+	obesity VARCHAR(10)
+);
+    * */
     int memNum;
 
     String name;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- BindingException 뜨면 xml 파일 위치 확인하기!-->
+
+<mapper namespace="com.spring.mvc.chap04.repository.ScoreMapper">
+    <insert id="save">
+        INSERT INTO tbl_score
+        (name, kor, eng, math, total, average, grade)
+        VALUES (#{name}, #{kor}, #{eng}, #{math}, #{total}, #{average}, #{grade})
+    </insert>
+
+    <delete id="deleteByStuNum">
+        DELETE FROM tbl_score
+        WHERE stu_num = ${stuNum}
+    </delete>
+
+    <!--    ORM : 자바객체 필드랑 테이블 컬럼을 매핑! -->
+    <!--    <resultMap id="score" type="com.spring.mvc.chap04.entity.Score">-->
+    <!--        <result property="stuNum" column="stu_num"/>-->
+    <!--    </resultMap>-->
+
+    <!--    <select id="findAll" resultMap="score">-->
+<!--    <select id="findAll" resultType="com.spring.mvc.chap04.entity.Score">-->
+    <select id="findAll" resultType="score">
+        <!--   왠만하면 * 적지 말고, 다 나열해서 적기     -->
+        SELECT * FROM tbl_score
+<!--    동적 SQL 로 정렬!    -->
+<!--   여기서 비교는 글자도 ==으로 함!    -->
+        <if test="sort == 'num'">
+            ORDER BY stu_num
+        </if>
+        <if test="sort == 'name'">
+            ORDER BY name
+        </if>
+        <if test="sort == 'avg'">
+            ORDER BY average DESC
+        </if>
+    </select>
+
+    <select id="findByStuNum" resultType="score">
+        SELECT * FROM tbl_score
+        WHERE stu_num = ${stuNum}
+    </select>
+</mapper>

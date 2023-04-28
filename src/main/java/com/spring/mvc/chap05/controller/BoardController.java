@@ -74,4 +74,17 @@ public class BoardController {
     }
 
 
+//    // 글 수정화면 열어주기
+//    @GetMapping("/update")
+//    public String update(int bno, Model model) {
+//        System.out.println("/board/update : GET");
+//        model.addAttribute("b",boardService.getDetail(bno));
+//        return "chap05/modify-form";
+//    }
+
+
+    // 글 수정 확인
+//    @PostMapping("/update")
+
+
 }

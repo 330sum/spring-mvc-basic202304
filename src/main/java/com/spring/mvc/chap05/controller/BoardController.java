@@ -2,9 +2,12 @@ package com.spring.mvc.chap05.controller;
 
 import com.spring.mvc.chap05.dto.BoardListResponseDTO;
 import com.spring.mvc.chap05.dto.BoardWriteRequestDTO;
+import com.spring.mvc.chap05.dto.page.Page;
+import com.spring.mvc.chap05.dto.page.PageMaker;
 import com.spring.mvc.chap05.entity.Board;
 import com.spring.mvc.chap05.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +28,25 @@ import java.util.List;
 @Controller // DispatcherServlet이 컨트롤러 주입받을 수 있도록 꼭 작성!
 @RequiredArgsConstructor
 @RequestMapping("/board") // 공통 URL
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
 
     // 목록 조회
     @GetMapping("/list")
-    public String list(Model model) {
-        System.out.println("/board/list : GET");
-        List<BoardListResponseDTO> responseDTO = boardService.getList();
+    public String list(Page page, Model model) {
+        log.info("/board/list : GET");
+        log.info("page : {}", page);
+        List<BoardListResponseDTO> responseDTO = boardService.getList(page);
+
+
+        // 페이징 알고리즘 작동
+        PageMaker maker = new PageMaker(page, boardService.getCount());
+
+
         model.addAttribute("bList", responseDTO);
+        model.addAttribute("maker", maker);
 
         return "chap05/list";
     }

@@ -1,6 +1,7 @@
 package com.spring.mvc.chap05.repository;
 
 import com.spring.mvc.chap05.dto.page.Page;
+import com.spring.mvc.chap05.dto.page.Search;
 import com.spring.mvc.chap05.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,7 +15,8 @@ public interface BoardMapper {
 //    List<Board> findAll();
 
     // 페이징(오버로딩)
-    List<Board> findAll(Page page);
+    List<Board> findAll(Search page);
+    // 자식이니까 데이터 더 많음
 
     // 게시물 등록 - 새글쓰기폼
     boolean save(Board board);
@@ -29,7 +31,7 @@ public interface BoardMapper {
     void upViewCount(int boardNo);
 
     // 총 게시물 수 조회하기
-    int count();
+    int count(Search search);
 
 
     // 게시물 수정 -> get요청 수정해줘 -> post 수정시켜줘 (title=? content=?)

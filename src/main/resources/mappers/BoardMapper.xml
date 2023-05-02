@@ -8,6 +8,21 @@
     <select id="findAll" resultType="board">
         SELECT board_no, title, content, view_count, reg_date_time
         FROM tbl_board
+<!--        WHERE title LIKE CONCAT('%', #{}, '%')-->
+<!--        WHERE content LIKE CONCAT('%', #{}, '%')-->
+        <if test="type == 'title'">
+<!--        빈문자열이면 type이 없으니까, 그냥 if조건문 안돌고 페이징만 하고 끝남 -->
+        WHERE title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'content'">
+            WHERE content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'tc'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+            OR content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+<!--        검색타입(작성자, 제목? 내용? 뭐?), 검색어(키워드)-->
+<!--        검색은 where절이 동적으로 들어가줘야한다 -->
         ORDER BY board_no DESC
         LIMIT #{pageStart}, #{amount}
     </select>
@@ -39,6 +54,17 @@
     <select id="count" resultType="int">
         SELECT COUNT(*)
         FROM tbl_board
+        <if test="type == 'title'">
+            <!--        빈문자열이면 type이 없으니까, 그냥 if조건문 안돌고 페이징만 하고 끝남 -->
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'content'">
+            WHERE content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'tc'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+            OR content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
     </select>
 
 

@@ -30,7 +30,7 @@ public class PageMaker {
     public PageMaker(Page page, int totalCount) {
         this.page = page; // 브라우저가 알려주고
         this.totalCount = totalCount; // 디비가 알려주고
-        this.finalPage = finalPage;
+//        this.finalPage = finalPage;
         makePageInfo();
     }
 

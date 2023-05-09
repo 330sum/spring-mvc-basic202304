@@ -429,6 +429,51 @@
 
 
 
+            // 댓글 삭제 이벤트 처리 함수
+            function replyRemoveClickEvent() {
+
+                const $replyData = document.getElementById('replyData');
+
+                $replyData.onclick = e => {
+
+                    e.preventDefault();
+
+                    if(e.target.matches('#replyDelBtn')) {
+                        // console.log('삭제버튼 클릭');
+
+                        if(!confirm('정말 삭제합니까?')) return;
+
+                        // 삭제할 댓글의 PK값 읽기
+                        // const rno = e.target.parentElement.parentElement.parentElement.dataset.replyid;
+                        // console.log(rno);
+                        const rno = e.target.closest('#replyContent').dataset.replyid
+                        console.log(rno);
+
+                        // 서버에 삭제 비동기 요청
+                        fetch(URL + '/' + rno, {
+                            method: 'DELETE'
+                            // headers: 바디에 실어보낼 게 없어서 헤더 그냥 기본헤더 보내면 됨
+                        }).then(res => {
+                            if(res.status===200) {
+                                console.log('댓글 정상 삭제');
+                                return res.json();
+                            }else {
+                                console.log('댓글 삭제 실패');
+                            }
+                            //삭제 끝나고 목록 렌더링
+                        }).then(responseResult=>{
+                            renderReplyList(responseResult);
+                        });
+
+
+                    }
+
+                }
+            }
+
+
+
+
             // ==== 메인 실행부
             (function() {
 
@@ -440,6 +485,9 @@
 
                 // 댓글 등록 이벤트 등록
                 makeReplyRegisterClickEvent();
+
+                // 삭제 이벤트 등록
+                replyRemoveClickEvent();
 
             })();
 

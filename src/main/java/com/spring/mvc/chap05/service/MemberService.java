@@ -17,7 +17,7 @@ public class MemberService {
     private final PasswordEncoder encoder;
 
     // 회원 가입 처리 서비스
-    public void join(SignUpRequestDTO dto) {
+    public boolean join(final SignUpRequestDTO dto) {
 
         // dto를 entity로 변환
         Member member = Member.builder()
@@ -28,8 +28,17 @@ public class MemberService {
                 .build();
 
         // 매퍼에게 회원정보 전달해서 저장명령
-        memberMapper.save(member);
-
+        return memberMapper.save(member);
 
     }
+
+    // 중복검사 서비스 중간처리
+    public boolean checkSignUpValue(String type, String keyword) {
+        int flagNum = memberMapper.isDuplicate(type, keyword);
+
+        return flagNum == 1;
+
+    }
+
+
 }

@@ -82,12 +82,12 @@ public class MemberController {
         // 로그인 실패시
         return "redirect:/members/sign-in";
         /*
-        // 왜 모델에 담으면 "redirect:/members/sign-in" jsp에 값이 찍히지 않는 이유?
-            redirect 재요청 (요청2번) 표사고 업어줌
-                model이 첫번째요청인데 http여서 기억못함
-                그래서 redirect 새로운 요청(2번째) 이기 때문에 jsp에 안남음
-                그래서 Model이 아니라 RedirectAttributes 사용하고, 메서드 불을 때도 addFlashAttribute 사용
-            forwarding to jsp 길안내 (요청 1 , 응답 1)
+        // 모델에 담아서 "redirect:/members/sign-in" 하면 jsp에 값이 찍히지 않는 이유?
+            -- redirect 재요청 (요청2번) 표사고 업어줌
+                model이 첫번째 요청(명시적 요청)인데 http여서 응답하고 기억못함
+                redirect 자동으로 요청(두번째 요청) 된건데, 그 전에꺼 이미 응답하고 남은게 없어서 jsp에 줄수가음슴
+                그래서 Model이 아니라 RedirectAttributes 사용하고, 메서드 부를 때도 addFlashAttribute 사용
+            -- forwarding to jsp 길안내 (요청 1번, 응답 1번)
 
 
 

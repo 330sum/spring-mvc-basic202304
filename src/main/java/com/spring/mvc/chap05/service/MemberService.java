@@ -1,5 +1,6 @@
 package com.spring.mvc.chap05.service;
 
+import com.spring.mvc.chap05.dto.LoginRequestDTO;
 import com.spring.mvc.chap05.dto.SignUpRequestDTO;
 import com.spring.mvc.chap05.entity.Member;
 import com.spring.mvc.chap05.repository.MemberMapper;
@@ -37,8 +38,27 @@ public class MemberService {
         int flagNum = memberMapper.isDuplicate(type, keyword);
 
         return flagNum == 1;
-
     }
 
 
+    // 로그인 검증
+    public LoginResult authenticate(LoginRequestDTO dto) {
+
+        Member foundMember = memberMapper.findMember(dto.getAccount());
+
+        // 회원가입 여부 확인
+        if (foundMember == null) {
+            log.info("{} - 회원가입 안했음 ㅂㅂ", dto.getAccount());
+            return LoginResult.NO_ACC;
+        }
+
+        // 비밀번호 일치 확인
+        if (!encoder.matches(dto.getPassword(), foundMember.getPassword())) {
+            log.info("비밀번호 불일치!");
+            return LoginResult.NO_PW;
+        }
+        log.info("{}님 로그인 성공!", foundMember.getName());
+        return LoginResult.SUCCESS;
+
+    }
 }

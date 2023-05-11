@@ -62,8 +62,14 @@ public class MemberController {
 
     // 로그인 양식 요청
     @GetMapping("/sign-in")
-    public String signIn() {
+    public String signIn(HttpServletRequest request) {
         log.info("/members/sign-in GET - forwarding to jsp");
+
+        // 요청정보 헤더 안에는 Referer라는 키가 있는데,
+        // Referer의 값은 이 페이지로 들어올 때, 어디에서 왔는지에 대한 URI 정보가 기록되어 있음
+        String referer = request.getHeader("Referer");
+        log.info("referer: {}", referer);
+
         return "members/sign-in";
     }
 

@@ -26,7 +26,7 @@
     <h1 id="main-title">
         <%-- session.getAttribute("login") -> MemberServiece에서 setAttribute한 dto임! 이게 아랫줄의 sessionScope.login임! --%>
         <c:if test="${sessionScope.login == null}">
-            초보자님 안녕하세요~~
+            환영환영!
         </c:if>
         <c:if test="${sessionScope.login != null}">
             ${sessionScope.login.nickName}님 하이룽~

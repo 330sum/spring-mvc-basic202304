@@ -37,6 +37,7 @@ public class MemberController {
         log.info("/members/sign-up GET - forwarding to jsp");
         return "members/sign-up";
     }
+
     // 회원가입 처리 요청
     @PostMapping("/sign-up")
     public String signUp(SignUpRequestDTO dto) {
@@ -86,7 +87,6 @@ public class MemberController {
             memberService.maintainLoginState(request.getSession(), dto.getAccount());
 
 
-
 //            // 쿠키 만들기("이름","값") - 둘다 스트링밖에 못줌
 //            Cookie loginCookie = new Cookie("login", "홍길동");
 //            // 쿠키 셋팅
@@ -95,8 +95,6 @@ public class MemberController {
 //
 //            // 쿠키를 응답시에 실어서 클라이언트에게 전송
 //            response.addCookie(loginCookie);
-
-
 
 
             return "redirect:/";
@@ -123,6 +121,21 @@ public class MemberController {
 
     }
 
+    // 로그아웃 요청 처리
+    @GetMapping("/sign-out")
+    public String signOut(
+//            HttpServletRequest request,
+            HttpSession session
+    ) {
+        // 세션에서 login정보를 제거
+//        HttpSession session = request.getSession();
+        session.removeAttribute("login");
+
+        // 세션을 아예 초기화 (세션만료 시간 초기화) invalidate(무효화)
+        session.invalidate();
+
+        return "redirect:/";
+    }
 
 
 }

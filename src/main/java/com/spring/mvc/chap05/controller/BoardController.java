@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /* URL 요청
@@ -36,7 +38,19 @@ public class BoardController {
 
     // 목록 조회
     @GetMapping("/list")
-    public String list(Search page, Model model) {
+    public String list(Search page, Model model, HttpServletRequest request) {
+
+        boolean flag = false;
+        // 쿠키를 확인
+        Cookie[] cookies = request.getCookies();
+        for (Cookie c : cookies) {
+            if(c.getName().equals("login")) {
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) return "redirect:/members/sign-in";
+
         log.info("/board/list : GET");
         log.info("page : {}", page);
         List<BoardListResponseDTO> responseDTO = boardService.getList(page);

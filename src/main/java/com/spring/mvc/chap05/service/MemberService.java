@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -61,4 +63,6 @@ public class MemberService {
         return LoginResult.SUCCESS;
 
     }
+
+
 }

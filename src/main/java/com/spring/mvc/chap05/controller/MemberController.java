@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 // CSR, SSR 두개다
 @Controller
@@ -68,7 +69,8 @@ public class MemberController {
 
     // 로그인 검증 요청
     @PostMapping("/sign-in")
-    public String signIn(LoginRequestDTO dto, RedirectAttributes ra, HttpServletResponse response) {
+    public String signIn(LoginRequestDTO dto, RedirectAttributes ra
+            , HttpServletResponse response, HttpServletRequest request) {
         // 리다이렉션시 2번째 응답에 데이터를 보내기 위함
         log.info("/members/sign-in POST! - {}", dto);
 
@@ -77,14 +79,23 @@ public class MemberController {
         // 로그인 성공시
         if (result == LoginResult.SUCCESS) {
 
-            // 쿠키 만들기("이름","값") - 둘다 스트링밖에 못줌
-            Cookie loginCookie = new Cookie("login", "홍길동");
-            // 쿠키 셋팅
-            loginCookie.setPath("/"); // 쿠키를 들고다니는 곳 (/면 모든 곳)
-            loginCookie.setMaxAge(60 * 60 * 24); // 쿠키수명(초단위)(현재 하루)
+            // 서버에서 세션에 로그인 정보를 저장
+            HttpSession session = request.getSession();
+            session.setAttribute("login", "메롱");
 
-            // 쿠키를 응답시에 실어서 클라이언트에게 전송
-            response.addCookie(loginCookie);
+
+
+
+//            // 쿠키 만들기("이름","값") - 둘다 스트링밖에 못줌
+//            Cookie loginCookie = new Cookie("login", "홍길동");
+//            // 쿠키 셋팅
+//            loginCookie.setPath("/"); // 쿠키를 들고다니는 곳 (/면 모든 곳)
+//            loginCookie.setMaxAge(60 * 60 * 24); // 쿠키수명(초단위)(현재 하루)
+//
+//            // 쿠키를 응답시에 실어서 클라이언트에게 전송
+//            response.addCookie(loginCookie);
+
+
 
 
             return "redirect:/";

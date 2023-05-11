@@ -80,9 +80,10 @@ public class MemberController {
         if (result == LoginResult.SUCCESS) {
 
             // 서버에서 세션에 로그인 정보를 저장
-            HttpSession session = request.getSession();
-            session.setAttribute("login", "메롱");
-
+//            HttpSession session = request.getSession();
+//            session.setAttribute("login", "메롱");
+            // 근데 이 일 컨트롤러가 하면 싫어하니까 서비스로 보내기
+            memberService.maintainLoginState(request.getSession(), dto.getAccount());
 
 
 

@@ -1,6 +1,7 @@
 package com.spring.mvc.chap05.service;
 
 import com.spring.mvc.chap05.dto.LoginRequestDTO;
+import com.spring.mvc.chap05.dto.LoginUserResponseDTO;
 import com.spring.mvc.chap05.dto.SignUpRequestDTO;
 import com.spring.mvc.chap05.entity.Member;
 import com.spring.mvc.chap05.repository.MemberMapper;
@@ -62,6 +63,37 @@ public class MemberService {
         log.info("{}님 로그인 성공!", foundMember.getName());
         return LoginResult.SUCCESS;
 
+    }
+
+
+    public void maintainLoginState(HttpSession session, String account) {
+
+        // 로그인이 성공하면 세션에 로그인한 회원의 정보들을 저장
+        /*
+            로그인시 클라이언트에게 전달할 회원정보
+            - 닉네임
+            - 프로필사진
+            - 마지막 로그인 시간
+         */
+        // 현재 로그인한 사람의 모든 정보
+        Member member = getMember(account);
+
+        // 현재 로그인한 사람의 화면에 보여줄 일부 정보
+        LoginUserResponseDTO dto = LoginUserResponseDTO.builder()
+                .account(member.getAccount())
+                .nickName(member.getName())
+                .email(member.getEmail())
+                .build();
+        // 그 정보를 세션에 저장
+        session.setAttribute("login", dto);
+        // 세션에 수명 설정 (초단위)
+        session.setMaxInactiveInterval(60 * 60); // 1시간 (설정 안하면 30분)
+    }
+
+
+    // 멤버 모든 정보를 가져오는 서비스 기능
+    public Member getMember(String account) {
+        return memberMapper.findMember(account);
     }
 
 

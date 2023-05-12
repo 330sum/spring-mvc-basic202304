@@ -76,11 +76,16 @@
 
                         </div>
                     </section>
-                    <div class="card-btn-group">
-                        <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+
+                    <!-- 닫기 버튼영역 - 자기글이면 닫기 버튼 떠오르게하기(자기글만 삭제가능) -->
+                    <c:if test = "${login.account == b.account}">
+                        <div class="card-btn-group">
+                            <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </c:if>
+
                 </div>
             </c:forEach>
 

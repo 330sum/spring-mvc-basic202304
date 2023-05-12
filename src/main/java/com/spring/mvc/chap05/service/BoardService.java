@@ -8,9 +8,11 @@ import com.spring.mvc.chap05.dto.page.Search;
 import com.spring.mvc.chap05.entity.Board;
 import com.spring.mvc.chap05.repository.BoardMapper;
 import com.spring.mvc.chap05.repository.BoardRepository;
+import com.spring.mvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,8 +47,12 @@ public class BoardService {
     }
 
     /* 글 등록 중간처리 */
-    public boolean register(BoardWriteRequestDTO dto) {
-        return boardRepository.save(new Board(dto));
+    public boolean register(BoardWriteRequestDTO dto, HttpSession session) {
+        Board board = new Board(dto);
+//        board.setAccount("현재로그인한계정");
+        // 로그인한 사람의 계정정보 추가 (세션) - 세션은 컨트롤러한테 달라고 해서 매퍼에게 저장하기
+        board.setAccount(LoginUtil.getCurrentLoginMemberAccount(session));
+        return boardRepository.save(board);
     }
 
     /* 삭제 중간 처리 */

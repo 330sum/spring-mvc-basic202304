@@ -7,6 +7,7 @@ import com.spring.mvc.chap05.dto.page.PageMaker;
 import com.spring.mvc.chap05.dto.page.Search;
 import com.spring.mvc.chap05.entity.Board;
 import com.spring.mvc.chap05.service.BoardService;
+import com.spring.mvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /* URL 요청
@@ -40,11 +42,11 @@ public class BoardController {
     @GetMapping("/list")
     public String list(Search page, Model model, HttpServletRequest request) {
 
-        boolean flag = false;
-
-        // 세션을 확인
-        Object login = request.getSession().getAttribute("login");
-        if (login != null) flag = true;
+//        boolean flag = false;
+//
+//        // 세션을 확인
+//        Object login = request.getSession().getAttribute("login");
+//        if (login != null) flag = true;
 
 
 //        // 쿠키를 확인
@@ -55,7 +57,7 @@ public class BoardController {
 //                break;
 //            }
 //        }
-        if (!flag) return "redirect:/members/sign-in";
+//        if (!flag) return "redirect:/members/sign-in";
 
         log.info("/board/list : GET");
         log.info("page : {}", page);
@@ -75,7 +77,14 @@ public class BoardController {
 
     // 글쓰기 화면 조회 요청
     @GetMapping("/write")
-    public String write() {
+    public String write(HttpSession session) {
+
+        // 로그인 안하면 회원가입창으로 보내기
+//        if(!LoginUtil.isLogin(session)) {
+//            return "redirect:/members/sign-in";
+//        }
+        // 이렇게 쓰지말구 인터셉터라는 문지기를 둬서 일괄적으로 관리하자!
+
         System.out.println("/board/write : GET");
         return "chap05/write";
     }

@@ -330,6 +330,7 @@
                             "       <div class='col-md-6'>" + text + "</div>" +
                             "       <div et-md-2 col-md-4 text-right'>";
 
+                        //  댓글도 자기 계정이면 삭제 가능, 관리자면 삭제가능
                         // if (currentAccount === rep.account || auth === 'ADMIN') {
                             tag +=
                                 "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +

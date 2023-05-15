@@ -78,7 +78,9 @@
                     </section>
 
                     <!-- 닫기 버튼영역 - 자기글이면 닫기 버튼 떠오르게하기(자기글만 삭제가능) -->
-                    <c:if test = "${login.account == b.account}">
+                    <!-- 관리자는 모두 삭제 할 수 있어야 함 -->
+                    <!-- login은 (SessionScope.login) LoginUserResponseDTO /  b는 BoardListponseDTO -->
+                    <c:if test = "${login.account == b.account || login.auth == 'ADMIN'}">
                         <div class="card-btn-group">
                             <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
                                 <i class="fas fa-times"></i>

@@ -3,7 +3,6 @@ package com.spring.mvc.interceptor;
 // 인터셉터: 하위 컨틀로러에 요청이 들어가기 전/후에 공통으로 검사할 일들을 정의해 놓는 클래스
 // 게시판 관련 인가 처리
 
-import com.spring.mvc.chap05.dto.BoardListResponseDTO;
 import com.spring.mvc.chap05.entity.Board;
 import com.spring.mvc.chap05.repository.BoardMapper;
 import com.spring.mvc.util.LoginUtil;

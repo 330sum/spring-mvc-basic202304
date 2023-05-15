@@ -2,8 +2,7 @@ package com.spring.mvc.util;
 
 // 회원 인증 인가 관련 상수와 메서드를 가진 객체
 
-import com.spring.mvc.chap05.dto.LoginRequestDTO;
-import com.spring.mvc.chap05.dto.LoginUserResponseDTO;
+import com.spring.mvc.chap05.dto.response.LoginUserResponseDTO;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;

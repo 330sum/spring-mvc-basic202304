@@ -1,9 +1,9 @@
 package com.spring.mvc.chap05.service;
 
-import com.spring.mvc.chap05.dto.ReplyDetailResponseDTO;
-import com.spring.mvc.chap05.dto.ReplyListResponseDTO;
-import com.spring.mvc.chap05.dto.ReplyPostRequestDTO;
-import com.spring.mvc.chap05.dto.ReplyPutRequestDTO;
+import com.spring.mvc.chap05.dto.response.ReplyDetailResponseDTO;
+import com.spring.mvc.chap05.dto.response.ReplyListResponseDTO;
+import com.spring.mvc.chap05.dto.request.ReplyPostRequestDTO;
+import com.spring.mvc.chap05.dto.request.ReplyModifyRequestDTO;
 import com.spring.mvc.chap05.dto.page.Page;
 import com.spring.mvc.chap05.dto.page.PageMaker;
 import com.spring.mvc.chap05.entity.Reply;
@@ -77,7 +77,7 @@ public class ReplyService {
     }
 
     /* 댓글 수정 서비스 */
-    public ReplyListResponseDTO modify(final ReplyPutRequestDTO dto) throws Exception {
+    public ReplyListResponseDTO modify(final ReplyModifyRequestDTO dto) throws Exception {
 
         boolean flag = replyMapper.modify(dto.toEntity());
 

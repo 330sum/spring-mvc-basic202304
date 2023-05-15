@@ -1,6 +1,6 @@
 package com.spring.mvc.chap05.repository;
 
-import com.spring.mvc.chap05.dto.AutoLoginDTO;
+import com.spring.mvc.chap05.dto.request.AutoLoginDTO;
 import com.spring.mvc.chap05.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

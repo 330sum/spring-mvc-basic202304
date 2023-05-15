@@ -1,4 +1,4 @@
-package com.spring.mvc.chap05.dto;
+package com.spring.mvc.chap05.dto.request;
 
 import com.spring.mvc.chap05.entity.Reply;
 import lombok.*;
@@ -15,7 +15,8 @@ import javax.validation.constraints.NotNull;
 @Builder
 // 클라이언트 -> 서버 수정하고싶다고 요청
 // 게시글 번호랑 댓글 번호필요
-public class ReplyPutRequestDTO {
+public class ReplyModifyRequestDTO {
+    @NotNull
     @Min(0) @Max(Long.MAX_VALUE) // 반드시 정수 입력하도록 체크
     private Long bno;
     @NotNull

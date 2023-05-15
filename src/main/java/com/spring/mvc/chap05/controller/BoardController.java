@@ -1,21 +1,17 @@
 package com.spring.mvc.chap05.controller;
 
-import com.spring.mvc.chap05.dto.BoardDetailResponseDTO;
-import com.spring.mvc.chap05.dto.BoardListResponseDTO;
-import com.spring.mvc.chap05.dto.BoardWriteRequestDTO;
-import com.spring.mvc.chap05.dto.page.Page;
+import com.spring.mvc.chap05.dto.response.BoardDetailResponseDTO;
+import com.spring.mvc.chap05.dto.response.BoardListResponseDTO;
+import com.spring.mvc.chap05.dto.request.BoardWriteRequestDTO;
 import com.spring.mvc.chap05.dto.page.PageMaker;
 import com.spring.mvc.chap05.dto.page.Search;
-import com.spring.mvc.chap05.entity.Board;
 import com.spring.mvc.chap05.service.BoardService;
-import com.spring.mvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;

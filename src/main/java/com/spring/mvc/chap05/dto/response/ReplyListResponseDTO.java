@@ -1,13 +1,9 @@
-package com.spring.mvc.chap05.dto;
+package com.spring.mvc.chap05.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spring.mvc.chap05.dto.page.PageMaker;
-import com.spring.mvc.chap05.entity.Reply;
+import com.spring.mvc.chap05.dto.response.ReplyDetailResponseDTO;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 // 서버 -> 클라이언트

@@ -81,7 +81,7 @@ public class MemberController {
         // 리다이렉션시 2번째 응답에 데이터를 보내기 위함
         log.info("/members/sign-in POST! - {}", dto);
 
-        LoginResult result = memberService.authenticate(dto);
+        LoginResult result = memberService.authenticate(dto, request.getSession(), response);
 
         // 로그인 성공시
         if (result == LoginResult.SUCCESS) {

@@ -1,5 +1,6 @@
 package com.spring.mvc.chap05.service;
 
+import com.spring.mvc.chap05.dto.AutoLoginDTO;
 import com.spring.mvc.chap05.dto.LoginRequestDTO;
 import com.spring.mvc.chap05.dto.LoginUserResponseDTO;
 import com.spring.mvc.chap05.dto.SignUpRequestDTO;
@@ -11,7 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
@@ -46,7 +51,7 @@ public class MemberService {
 
 
     // 로그인 검증
-    public LoginResult authenticate(LoginRequestDTO dto) {
+    public LoginResult authenticate(LoginRequestDTO dto, HttpSession session, HttpServletResponse response) {
 
         Member foundMember = memberMapper.findMember(dto.getAccount());
 
@@ -61,6 +66,30 @@ public class MemberService {
             log.info("비밀번호 불일치!");
             return LoginResult.NO_PW;
         }
+
+        // 자동로그인 체크 여부 확인
+        if (dto.isAutoLogin()) {
+            // 1. 쿠키 생성 - 쿠키 값에 세션아이디를 저장 (LoginUtil에 가서 "auto"라는 키)
+            // 키 벨류 값으로 만들 : 키는 벨류는 세션아이디로 만듦
+            Cookie autoLoginCookie = new Cookie(LoginUtil.AUTO_LOGIN_COOKIE, session.getId());
+            // 2. 쿠키 셋팅 - 수명과 사용경로
+            int limitTime = 60 * 60 * 24 * 90; //90일
+            autoLoginCookie.setMaxAge(limitTime);
+            autoLoginCookie.setPath("/"); // 전체경로 - 진입경로가 항상 home이 아니기 때문에
+            // 3. 쿠키를 클라이언트에 응답전송
+            response.addCookie(autoLoginCookie);
+            // 4. DB에도 쿠키에 저장된 값과 수명을 저장
+            memberMapper.saveAutoLogin(
+                    AutoLoginDTO.builder()
+                            .sessionId(session.getId())
+                            .account(dto.getAccount())
+                            .limitTime(LocalDateTime.now().plusDays(90)) // 현재시간으로부터 90일
+                            .build()
+            );
+
+        }
+
+
         log.info("{}님 로그인 성공!", foundMember.getName());
         return LoginResult.SUCCESS;
 

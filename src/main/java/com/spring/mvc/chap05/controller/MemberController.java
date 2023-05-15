@@ -4,6 +4,7 @@ import com.spring.mvc.chap05.dto.LoginRequestDTO;
 import com.spring.mvc.chap05.dto.SignUpRequestDTO;
 import com.spring.mvc.chap05.service.LoginResult;
 import com.spring.mvc.chap05.service.MemberService;
+import com.spring.mvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import static com.spring.mvc.util.LoginUtil.isAutoLogin;
 
 // CSR, SSR 두개다
 @Controller
@@ -129,18 +132,34 @@ public class MemberController {
 
     // 로그아웃 요청 처리
     @GetMapping("/sign-out")
-    public String signOut(
-//            HttpServletRequest request,
-            HttpSession session
-    ) {
-        // 세션에서 login정보를 제거
+    public String signOut(HttpServletRequest request, HttpServletResponse response) {
+
+        HttpSession session = request.getSession();
+
+        // 로그인 중인지 확인
+        if (LoginUtil.isLogin(session)) {
+
+            // 자동 로그인 상태라면 해제한다.
+            // 로그인쿠키를 가지고 있는지 확인 필요 -> loginUtil에 자동로그인 여부 확인 메서드 만들기
+            if (isAutoLogin(request)) {
+                log.info("auto login clearing...");
+                memberService.autoLoginClear(request, response);
+                // 쿠키 삭제하려면 response객체가 있어야 함 -> 쿠키를 지워줘야하기 때문
+                // 서비스쪽에 만들기
+            }
+
+            // 세션에서 login정보를 제거
 //        HttpSession session = request.getSession();
-        session.removeAttribute("login");
+            session.removeAttribute("login");
 
-        // 세션을 아예 초기화 (세션만료 시간 초기화) invalidate(무효화)
-        session.invalidate();
+            // 세션을 아예 초기화 (세션만료 시간 초기화) invalidate(무효화)
+            session.invalidate();
 
-        return "redirect:/";
+            return "redirect:/";
+        }
+
+        // 로그인 중이 아닌데, 로그아웃 요청하면 로그인페이지로 보내기
+        return "redirect:/members/sign-in";
     }
 
 

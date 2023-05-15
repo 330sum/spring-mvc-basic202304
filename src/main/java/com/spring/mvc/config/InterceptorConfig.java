@@ -1,6 +1,7 @@
 package com.spring.mvc.config;
 
 import com.spring.mvc.interceptor.AfterLoginInterceptor;
+import com.spring.mvc.interceptor.AutoLoginInterceptor;
 import com.spring.mvc.interceptor.BoardInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     private final BoardInterceptor boardInterceptor;
     private final AfterLoginInterceptor afterLoginInterceptor;
+    private final AutoLoginInterceptor autoLoginInterceptor;
 
     // 인터셉터 설정 등록
     @Override
@@ -28,6 +30,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // 로그인 후처리 인터셉터 설정
         registry.addInterceptor(afterLoginInterceptor)
                 .addPathPatterns("/members/sign-in", "/members/sign-up")
+                ;
+
+        // 자동 로그인 인터셉터 설정
+        registry.addInterceptor(autoLoginInterceptor)
+                .addPathPatterns("/**") // 별 2개는 진짜 모든~~~ 경로에서 들어와도 자동로그인
                 ;
     }
 }

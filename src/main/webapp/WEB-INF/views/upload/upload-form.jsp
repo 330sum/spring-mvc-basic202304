@@ -32,6 +32,7 @@
 
     <form action="/upload-file" method="post" enctype="multipart/form-data">
         <input id="img-input" type="file" name="thumbnail" accept="image/*">
+        <%-- 속성 중 multiple이라고 한꺼번에 여러개 올리는 것도 있음 --%>
         <button type="submit">전송</button>
     </form>
 

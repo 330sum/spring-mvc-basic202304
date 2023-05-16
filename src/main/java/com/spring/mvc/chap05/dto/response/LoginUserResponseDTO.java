@@ -13,5 +13,6 @@ public class LoginUserResponseDTO {
     private String nickName;
     private String email;
     private String auth; // 멤버서비스에서 만들어짐
+    private String profile;
 
 }

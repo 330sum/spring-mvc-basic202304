@@ -13,7 +13,7 @@
 
     <select id="findMember" resultType="member">
         SELECT
-            account, password, name, email, auth, reg_date
+            account, password, name, email, auth, reg_date, profile_image
         FROM tbl_member
         WHERE account = #{account}
     </select>

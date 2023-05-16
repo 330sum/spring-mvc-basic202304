@@ -45,7 +45,7 @@ public class FileUtil {
         // fullPath = D:/abc/upload/2023/05/16/aggfdg.jpg
         // rootPath = D:/abc/upload/ -> application.properites 확인
 
-        return fullPath.substring(roothPath.length()-1);
+        return fullPath.substring(roothPath.length());
     }
 
     /**

@@ -14,6 +14,32 @@
             margin-top: 200px;
             margin-bottom: 200px;
         }
+
+        .profile {
+            margin-bottom: 70px;
+            text-align: center;
+        }
+
+        .profile label {
+            font-weight: 700;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: rgb(140, 217, 248);
+        }
+
+        .profile .thumbnail-box {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 30px auto 10px;
+            cursor: pointer;
+        }
+
+        .profile .thumbnail-box img {
+            width: 200px;
+            height: 200px;
+        }
     </style>
 
 </head>
@@ -33,7 +59,24 @@
 
 
                         <form action="/members/sign-up" name="signup" id="signUpForm" method="post"
-                            style="margin-bottom: 0;">
+                            style="margin-bottom: 0;" enctype="multipart/form-data">
+
+
+                            <div class="profile">
+                                <div class="thumbnail-box">
+                                    <img src="/assets/img/img-add.png" alt="프로필 썸네일">
+                                </div>
+
+                                <label>프로필 이미지 추가</label>
+
+                                <input 
+                                    type="file" 
+                                    id="profile-img" 
+                                    accept="image/*" 
+                                    style="display: none;"
+                                    name="profileImage"
+                                >
+                            </div>
 
 
                             <table style="cellpadding: 0; cellspacing: 0; margin: 0 auto; width: 100%">
@@ -153,20 +196,23 @@
                 checkResultList[0] = false;
             } else if (!accountPattern.test(idValue)) {
                 $idInput.style.borderColor = 'red';
-                document.getElementById('idChk').innerHTML = '<b style="color: red;">[아이디는 4~14글자의 영문,숫자로 입력하세요.]</b>';
+                document.getElementById('idChk').innerHTML =
+                    '<b style="color: red;">[아이디는 4~14글자의 영문,숫자로 입력하세요.]</b>';
                 checkResultList[0] = false;
             } else {
 
-                fetch('/members/check?type=account&keyword='+idValue) // get이니까, 두번째 파라미터 필요없음
+                fetch('/members/check?type=account&keyword=' + idValue) // get이니까, 두번째 파라미터 필요없음
                     .then(res => res.json())
                     .then(flag => {
-                        if(flag) { // true면 중복
+                        if (flag) { // true면 중복
                             $idInput.style.borderColor = 'red';
-                            document.getElementById('idChk').innerHTML = '<b style="color: red;">[아이디가 중복되었습니다!]</b>';
+                            document.getElementById('idChk').innerHTML =
+                                '<b style="color: red;">[아이디가 중복되었습니다!]</b>';
                             checkResultList[0] = false;
-                        }else {
+                        } else {
                             $idInput.style.borderColor = 'skyblue';
-                            document.getElementById('idChk').innerHTML = '<b style="color: skyblue;">[사용가능한 아이디입니다.]</b>';
+                            document.getElementById('idChk').innerHTML =
+                                '<b style="color: skyblue;">[사용가능한 아이디입니다.]</b>';
                             checkResultList[0] = true;
                         }
                     });
@@ -188,26 +234,23 @@
 
             if (pwValue.trim() === '') {
                 $pwInput.style.borderColor = 'red';
-                document.getElementById('pwChk').innerHTML
-                    = '<b style="color: red;">[비밀번호는 필수값입니다!]</b>';
-                    checkResultList[1] = false;
+                document.getElementById('pwChk').innerHTML = '<b style="color: red;">[비밀번호는 필수값입니다!]</b>';
+                checkResultList[1] = false;
             } else if (!passwordPattern.test(pwValue)) {
                 $pwInput.style.borderColor = 'red';
-                document.getElementById('pwChk').innerHTML
-                    = '<b style="color: red;">[특수문자 포함 8자 이상!]</b>';
-                    checkResultList[1] = false;
+                document.getElementById('pwChk').innerHTML = '<b style="color: red;">[특수문자 포함 8자 이상!]</b>';
+                checkResultList[1] = false;
             } else {
 
                 $pwInput.style.borderColor = 'skyblue';
-                document.getElementById('pwChk').innerHTML
-                    = '<b style="color: skyblue;">[사용가능한 비밀번호입니다.]</b>';
-                    checkResultList[1] = true;
-                
+                document.getElementById('pwChk').innerHTML = '<b style="color: skyblue;">[사용가능한 비밀번호입니다.]</b>';
+                checkResultList[1] = true;
+
             }
         };
 
 
-        
+
 
         // 패스워드 확인란 입력값 검증
         const $pwCheckInput = document.getElementById('password_check');
@@ -219,20 +262,17 @@
 
             if (pwCheckValue.trim() === '') {
                 $pwCheckInput.style.borderColor = 'red';
-                document.getElementById('pwChk2').innerHTML
-                    = '<b style="color: red;">[비밀번호 확인란은 필수값입니다!]</b>';
-                    checkResultList[2] = false;
+                document.getElementById('pwChk2').innerHTML = '<b style="color: red;">[비밀번호 확인란은 필수값입니다!]</b>';
+                checkResultList[2] = false;
             } else if ($pwCheckInput.value !== $pwInput.value) {
                 $pwCheckInput.style.borderColor = 'red';
-                document.getElementById('pwChk2').innerHTML
-                    = '<b style="color: red;">[위에랑 똑같이 쓰세요!]</b>';
-                    checkResultList[2] = false;
+                document.getElementById('pwChk2').innerHTML = '<b style="color: red;">[위에랑 똑같이 쓰세요!]</b>';
+                checkResultList[2] = false;
             } else {
 
                 $pwCheckInput.style.borderColor = 'skyblue';
-                document.getElementById('pwChk2').innerHTML
-                    = '<b style="color: skyblue;">[참 잘했어요~]</b>';
-                    checkResultList[2] = true;
+                document.getElementById('pwChk2').innerHTML = '<b style="color: skyblue;">[참 잘했어요~]</b>';
+                checkResultList[2] = true;
             }
         };
 
@@ -251,20 +291,17 @@
 
             if (nameValue.trim() === '') {
                 $nameInput.style.borderColor = 'red';
-                document.getElementById('nameChk').innerHTML
-                    = '<b style="color: red;">[이름은 필수정보!]</b>';
-                    checkResultList[3] = false;
+                document.getElementById('nameChk').innerHTML = '<b style="color: red;">[이름은 필수정보!]</b>';
+                checkResultList[3] = false;
             } else if (!namePattern.test(nameValue)) {
                 $nameInput.style.borderColor = 'red';
-                document.getElementById('nameChk').innerHTML
-                    = '<b style="color: red;">[이름은 한글로 ~]</b>';
-                    checkResultList[3] = false;
+                document.getElementById('nameChk').innerHTML = '<b style="color: red;">[이름은 한글로 ~]</b>';
+                checkResultList[3] = false;
             } else {
 
                 $nameInput.style.borderColor = 'skyblue';
-                document.getElementById('nameChk').innerHTML
-                    = '<b style="color: skyblue;">[사용가능한 이름입니다.]</b>';
-                    checkResultList[3] = true;
+                document.getElementById('nameChk').innerHTML = '<b style="color: skyblue;">[사용가능한 이름입니다.]</b>';
+                checkResultList[3] = true;
             }
         };
 
@@ -284,14 +321,12 @@
 
             if (emailValue.trim() === '') {
                 $emailInput.style.borderColor = 'red';
-                document.getElementById('emailChk').innerHTML
-                    = '<b style="color: red;">[이메일 필수값입니다!]</b>';
-                    checkResultList[4] = false;
+                document.getElementById('emailChk').innerHTML = '<b style="color: red;">[이메일 필수값입니다!]</b>';
+                checkResultList[4] = false;
             } else if (!emailPattern.test(emailValue)) {
                 $emailInput.style.borderColor = 'red';
-                document.getElementById('emailChk').innerHTML
-                    = '<b style="color: red;">[이메일 형식을 지켜주세요~]</b>';
-                    checkResultList[4] = false;
+                document.getElementById('emailChk').innerHTML = '<b style="color: red;">[이메일 형식을 지켜주세요~]</b>';
+                checkResultList[4] = false;
             } else {
 
                 fetch('/members/check?type=email&keyword=' + emailValue)
@@ -299,18 +334,18 @@
                     .then(flag => {
                         if (flag) { // 중복
                             $emailInput.style.borderColor = 'red';
-                            document.getElementById('emailChk').innerHTML
-                                = '<b style="color: red;">[이메일이 중복되었습니다.]</b>';
-                                checkResultList[4] = false;
-                            } else {
+                            document.getElementById('emailChk').innerHTML =
+                                '<b style="color: red;">[이메일이 중복되었습니다.]</b>';
+                            checkResultList[4] = false;
+                        } else {
                             $emailInput.style.borderColor = 'skyblue';
-                            document.getElementById('emailChk').innerHTML
-                                = '<b style="color: skyblue;">[사용가능한 이메일입니다.]</b>';
-                                checkResultList[4] = true;
-                            }
+                            document.getElementById('emailChk').innerHTML =
+                                '<b style="color: skyblue;">[사용가능한 이메일입니다.]</b>';
+                            checkResultList[4] = true;
+                        }
                     });
 
-                
+
             }
         };
 
@@ -322,8 +357,8 @@
 
             // 5개의 입력칸이 모두 통과되었을 경우 폼을 서브밋
             const $form = document.getElementById('signUpForm');
-            
-            if(!checkResultList.includes(false)) {
+
+            if (!checkResultList.includes(false)) {
                 $form.submit();
             } else {
                 alert('입력란을 다시 확인하세요!');
@@ -331,9 +366,34 @@
         };
 
 
+        // 프로필 사진 관련 스크립트
+        const $profile = document.querySelector('.profile');
+        const $fileInput = document.getElementById('profile-img');
 
+        // 프로필 추가 영역 클릭 이벤트
+        $profile.onclick = e => {
+            $fileInput.click();
+        };
 
+        // 프로필 사진 선택시 썸네일 이벤트
+        $fileInput.onchange = e => {
+            // 첨부한 파일의 데이터를 읽어오기
+            const fileData = $fileInput.files[0];
+            // console.log(fileData);
 
+            // 첨부파일의 바이트데이터를 읽어들이는 객체 생성
+            const reader = new FileReader();
+
+            // 파일의 바이트데이터를 읽어서 img태그의 src속성이나 
+            // a태그의 href속성에 넣기 위한 형태로 읽음
+            reader.readAsDataURL(fileData);
+
+            // 첨부파일이 등록되는 순간 img태그에 이미지를 세팅
+            reader.onloadend = e => {
+                const $imgTag = document.querySelector('.thumbnail-box img');
+                $imgTag.setAttribute('src', reader.result);
+            };
+        };
 
 
     </script>

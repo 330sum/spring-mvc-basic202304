@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/replies")
@@ -44,7 +46,7 @@ public class ReplyController {
 
     /* 댓글 등록 요청 (댓글 써줘! -> DB에 넣어줘 post) */
     @PostMapping
-    public ResponseEntity<?> create(@Validated @RequestBody ReplyPostRequestDTO dto, BindingResult result) {
+    public ResponseEntity<?> create(@Validated @RequestBody ReplyPostRequestDTO dto, BindingResult result, HttpSession session) {
                 // CSR(클라이언트사이드렌더링)은 등록을 하려면 post로 클라이언트가 서버로 post로 보내야하는데, post 보내려면 form으로 보내야함. form은 html임.
                 // @RequestBody : 요청메시지 바디에 JSON으로 보내주세융
                 // @Validated : DTO에 검증 @필수값 넣은 것 대로 검증함
@@ -63,7 +65,7 @@ public class ReplyController {
 
         // 서비스에 비즈니스 로직 처리 위임
         try {
-            ReplyListResponseDTO responseDTO = replyService.register(dto);//ctrl + alt + t
+            ReplyListResponseDTO responseDTO = replyService.register(dto, session);//ctrl + alt + t
         // 성공시 클라이언트에게 응답하기
         //  return ResponseEntity.ok().body("OK!!!");
             return ResponseEntity.ok().body(responseDTO);

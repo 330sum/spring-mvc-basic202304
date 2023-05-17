@@ -18,6 +18,7 @@ public class ReplyDetailResponseDTO {
     private long rno;
     private String text;
     private String writer;
+    private String account;
     // 원본글번호는 필요없다고 함
 
     @JsonFormat(pattern = "yyyy년 MM월 dd일 HH:mm")
@@ -29,5 +30,6 @@ public class ReplyDetailResponseDTO {
         this.text = reply.getReplyText();
         this.writer = reply.getReplyWriter();
         this.regDate = reply.getReplyDate();
+        this.account = reply.getAccount();
     }
 }

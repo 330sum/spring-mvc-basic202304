@@ -30,7 +30,7 @@
     </select>
 
     <select id="findAll" resultType="reply">
-        SELECT reply_no, reply_text, reply_writer, reply_date, board_no
+        SELECT reply_no, reply_text, reply_writer, reply_date, board_no, account
         FROM tbl_reply
         WHERE board_no = #{bn}
         ORDER BY reply_no

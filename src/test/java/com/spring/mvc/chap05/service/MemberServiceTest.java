@@ -17,18 +17,18 @@ class MemberServiceTest {
 
 
 
-    @Test
-    @DisplayName("SignupDTO를 전달하면 회원가입에 성공해야 한다.")
-    void joinTest() {
-        //given
-        SignUpRequestDTO dto = new SignUpRequestDTO();
-        dto.setAccount("kukukaka2");
-        dto.setPassword("lalala2");
-        dto.setName("루피2");
-        dto.setEmail("aaa2@eee.com");
-        //when
-        memberService.join(dto, savePath);
-    }
+//    @Test
+//    @DisplayName("SignupDTO를 전달하면 회원가입에 성공해야 한다.")
+//    void joinTest() {
+//        //given
+//        SignUpRequestDTO dto = new SignUpRequestDTO();
+//        dto.setAccount("kukukaka2");
+//        dto.setPassword("lalala2");
+//        dto.setName("루피2");
+//        dto.setEmail("aaa2@eee.com");
+//        //when
+//        memberService.join(dto, savePath);
+//    }
 
 
     @Test

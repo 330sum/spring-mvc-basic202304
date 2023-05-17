@@ -30,6 +30,7 @@ public class Reply {
     private LocalDateTime replyDate;
     private long boardNo;
     private String account;
+    private String profileImage; //ReplyMapper.xml에서 as로 쓴거 가져와야 함! 주의하기!
 
 
 

@@ -118,7 +118,7 @@ public class MemberService {
                 .auth(member.getAuth().toString()) //enum이니까 toString한 후에 바꾸기
                 .profile(member.getProfileImage())
                 .build();
-        // 그 정보를 세션에 저장
+        // 그 정보를 세션에 저장`
         session.setAttribute(LoginUtil.LOGIN_KEY, dto);
         // 세션에 수명 설정 (초단위)
         session.setMaxInactiveInterval(60 * 60); // 1시간 (설정 안하면 30분)
